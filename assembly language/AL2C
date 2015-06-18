@@ -1,0 +1,60 @@
+##########################################################################
+# Brent C Johnson, CS 2318-002, Assignment 2 Part 1 Program C
+############################ data segment ################################
+		.data
+intArray:	.word 123, 234, 345
+arrayPrompt:    .asciiz "The numbers are: "
+		.text
+		.globl main
+		
+main:
+		li $v0, 4
+		la $a0, arrayPrompt
+		syscall
+		li $v0, 1
+		la $t1, intArray
+		lw $a0, 0($t1)
+		syscall
+		li $v0, 11
+		li $a0, ' '
+		syscall
+		li $v0, 1
+		lw $a0, 4($t1)
+		syscall
+		li $v0, 11
+		li $a0, ' '
+		syscall
+		li $v0, 1
+		lw $a0, 8($t1)
+		syscall
+
+		la $t1, intArray		#$t1 has base address of array
+		lw $t2, 0($t1)               #load 123 into $t2
+		lw $t3, 4($t1)       	    #load 234 into $t3
+		lw $t4, 8($t1)			#load 345 into $t4
+		sw $t3, 0($t1)
+		sw $t2, 8($t1)
+		sw $t4, 4($t1)
+		
+		li $v0, 4
+		la $a0, arrayPrompt
+		syscall
+		li $v0, 1
+		la $t1, intArray
+		lw $a0, 0($t1)
+		syscall
+		li $v0, 11
+		li $a0, ' '
+		syscall
+		li $v0, 1
+		lw $a0, 4($t1)
+		syscall
+		li $v0, 11
+		li $a0, ' '
+		syscall
+		li $v0, 1
+		lw $a0, 8($t1)
+		syscall	
+		
+		li $v0, 10
+		syscall

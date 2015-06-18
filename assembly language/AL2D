@@ -1,0 +1,70 @@
+##########################################################################
+# Brent C Johnson, CS 2318-002, Assignment 2 Part 1 Program D
+############################ data segment ################################
+
+
+#Prompt the user to enter the integer scores for Exam 1, Exam 2 and Final Exam, 
+#read the scores, compute the weighted average score (using the following formula),
+# and display a labeled output about the weighted average score.#
+#
+
+
+		.data
+intArray:	.word 123, 234, 345
+int1Prompt:     .asciiz "Enter a score for exam 1: "
+int2Prompt:	.asciiz "Enter a score for exam 2: "
+finalPrompt:	.asciiz "Enter a score for final exam: "
+scorePrompt:    .asciiz "Weighted average:  "
+		.text
+		.globl main
+		
+main:
+		li $v0, 4		
+		la $a0, int1Prompt
+		syscall			
+		li $v0, 5		
+		syscall			
+		move $t1, $v0		# t1 has exam1 score
+		
+		li $v0, 4		
+		la $a0, int2Prompt
+		syscall			
+		li $v0, 5		
+		syscall			
+		move $t2, $v0		# t2 has exam2 score	
+		
+		li $v0, 4		
+		la $a0, finalPrompt
+		syscall			
+		li $v0, 5		
+		syscall			
+		move $t3, $v0		# t3 has final exam score
+		
+		li $t9, 410		# $t9 has 410
+		mult $t9, $t1		#low has 410*exam1
+		mflo $t9		# t9 has 410*exam1
+		srl $t9, $t9, 11 	# t9 has exam1 * 410/2048
+		
+		li $t8, 256		# $t8 has 256
+		mult $t8, $t2		#low has 256*exam2
+		mflo $t8		# t8 has 256*exam2
+		li $t7, 853		
+		div $t8, $t7		#low has value  	
+		mflo $t8		# t8 has (256*exam2)/853
+	
+		srl $t3, $t3, 1  	# t3 has finalexam/2
+		add $t3, $t9, $t3	#t3 has weighted final + weighted exam1
+		add $t3, $t3, $t8	#t3 his final average
+		
+		li $v0, 4		
+		la $a0, scorePrompt
+		syscall			
+		
+		
+		move $a0, $t3
+		li $v0, 1
+		syscall
+			
+		
+		li $v0, 10
+		syscall
